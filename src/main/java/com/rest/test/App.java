@@ -28,6 +28,8 @@ public class App {
     public static void main(String[] args) {
         initConfig();
 
+        port(80);
+
         before("/*", (request, response) -> {
             Base.open("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/notification_app?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
         });
