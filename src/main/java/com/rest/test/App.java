@@ -25,10 +25,18 @@ public class App {
         freeMarkerEngine = new FreeMarkerEngine(freeMarkerConfiguration);
     }
 
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 3000; //return default port if heroku-port isn't set (i.e. on localhost)
+    }
+
     public static void main(String[] args) {
         initConfig();
 
-        port(80);
+        port(getHerokuAssignedPort());
 
         before("/*", (request, response) -> {
             Base.open("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/notification_app?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");

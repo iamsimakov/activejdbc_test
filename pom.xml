@@ -123,7 +123,7 @@
     </testResources>
     <directory>./target</directory>
     <finalName>restprj-1.0-SNAPSHOT</finalName>
-      <plugins>
+    <plugins>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.3</version>
@@ -131,6 +131,25 @@
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.2-beta-5</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+                <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptorRefs>
+              <!-- This tells Maven to include all dependencies -->
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -358,6 +377,19 @@
               <artifactId>maven-project-info-reports-plugin</artifactId>
             </reportPlugin>
           </reportPlugins>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.heroku.sdk</groupId>
+        <artifactId>heroku-maven-plugin</artifactId>
+        <version>0.4.4</version>
+        <configuration>
+            <jdkVersion>1.8</jdkVersion>
+            <appName>radiant-cove-26807</appName>
+            <processTypes>
+                <!-- Tell Heroku how to launch your application -->
+                <web>java -jar ./target/restprj-1.0-SNAPSHOT.jar</web>
+            </processTypes>
         </configuration>
       </plugin>
     </plugins>
