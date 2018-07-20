@@ -16,6 +16,8 @@ import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 
+import org.postgresql.Driver;
+
 public class App {
     private static FreeMarkerEngine freeMarkerEngine = null;
 
