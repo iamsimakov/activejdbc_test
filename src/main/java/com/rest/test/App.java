@@ -39,7 +39,7 @@ public class App {
         port(getHerokuAssignedPort());
 
         before("/*", (request, response) -> {
-            Base.open("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost:3306/notification_app?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "root", "");
+            Base.open("org.postgresql.Driver", System.getenv("JDBC_DATABASE_URL"), System.getenv("JDBC_DATABASE_USERNAME"), System.getenv("JDBC_DATABASE_PASSWORD"));
         });
         after("/*", (request, response) -> {
             Base.close();
