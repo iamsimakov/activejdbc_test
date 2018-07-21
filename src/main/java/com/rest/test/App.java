@@ -16,7 +16,10 @@ import java.util.Map;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 
-import org.postgresql.Driver;
+// import org.postgresql.Driver;
+
+// curl -X GET "https://***domain***/send_notification?token=<secret>&body=test_notification&severity=log"
+// curl -X GET "https://***domain***/notifications?token=<secret>"
 
 public class App {
     private static FreeMarkerEngine freeMarkerEngine = null;
@@ -58,6 +61,11 @@ public class App {
             List<User> users = User.findAll();
             response.type("application/json");
             return listUsersToJson(users);
+        });
+        get("/api/notifications", (request, response) -> {
+            List<Notification> notifications = Notification.findAll();
+            response.type("application/json");
+            return listNotificationsToJson(notifications);
         });
         // create users, notifications
         get("/create_user", (request, response) -> {
@@ -112,6 +120,14 @@ public class App {
         Map<String, List<User>> model = new HashMap<>();
         model.put("users", users);
         return freeMarkerEngine.render(new ModelAndView(model, "users.ftl"));
+    }
+
+    public static String listNotificationsToJson(List<Notification> notifications) {
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        notifications.forEach(n -> {
+            builder.add(n.toJson());
+        });
+        return builder.build().toString();
     }
 
     public static String listNotificationsToHtml(List<Notification> notifications) {
